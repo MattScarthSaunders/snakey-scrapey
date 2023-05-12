@@ -11,7 +11,7 @@ class BlogSpider(scrapy.Spider):
     used_urls = []
 
     custom_settings = {
-        'FEEDS': { './scraped_data/%(name)s/%(name)s_batch_%(batch_id)d.jsonl': { 'format': 'jsonlines', 'batch_item_count': 50, 'overwrite': True}}
+        'FEEDS': { './scraped_data/%(name)s/%(name)s_batch_%(batch_id)d.json': { 'format': 'json', 'batch_item_count': 50, 'overwrite': True}}
         }
 
 
@@ -27,12 +27,15 @@ class BlogSpider(scrapy.Spider):
         # hipster checklist
         self.used_urls.append(response.url)
         
-        # only write something if something is worth writing
+        # find the thing, save the things
         elements = response.xpath("//*[contains(text(), 'SQL')]").getall()
 
         if len(elements) != 0:
+            json_body = {}
             for i in range(len(elements)):
-                yield {f'element_{i+1}/{len(elements)}': elements[i], 'url': response.url, 'time': f'{datetime.now()}'}
+                json_body[str(i)] = elements[i]
+
+            yield {'body': json_body, 'meta': {'url': response.url, 'time': f'{datetime.now()}'}}
         
         # be free, my child
         for next_page in response.css('a'):
