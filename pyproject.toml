@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "snakey-scrapey"
+version = "0.1.0"
+description = ""
+authors = ["Matthew Scarth-Saunders <101186068+MattScarthSaunders@users.noreply.github.com>"]
+readme = "README.md"
+packages = [{include = "snakey_scrapey"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pytest = "^7.3.1"
+scrapy = "^2.9.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
